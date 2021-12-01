@@ -7,6 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm i
 
 # Copy rest of source files and build main app.
+COPY . .
 RUN npm run build
 
 
