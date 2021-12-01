@@ -13,5 +13,5 @@ RUN npm run build
 
 FROM nginx:1.20.2-alpine
 
-# Copy built files in prev stage to nginx html folder. Doing this we get final image with size only 25MB.
+# Copy built files in prev stage to nginx html folder. Doing this we would get final image with size only 25MB.
 COPY --from=build /usr/app/build /usr/share/nginx/html
