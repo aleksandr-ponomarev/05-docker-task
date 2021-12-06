@@ -1,4 +1,4 @@
-FROM python:3.9.9 as build
+FROM python:3.9.9 as base
 COPY requirements.txt .
 RUN set -xe \
 		&& pip install -r requirements.txt
@@ -12,6 +12,8 @@ WORKDIR /flask
 RUN set -xe \
 		&& pip install -r /flask/requirements.txt \
 		&& rm -rf /root/.cache
+
+COPY . /flask/
 
 EXPOSE 5000
 
