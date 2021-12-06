@@ -1,20 +1,15 @@
-FROM python:3.9.9 as base
+FROM python:3.9.9-slim
+
+WORKDIR /app
 COPY requirements.txt .
-RUN set -xe \
-		&& pip install -r requirements.txt
-		
-FROM python:3.9.9-alpine
-COPY --from=base /root/.cache /root/.cache
-COPY --from=base requirements.txt /flask/
 
-WORKDIR /flask
-
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 RUN set -xe \
 		&& pip install -r /flask/requirements.txt \
 		&& rm -rf /root/.cache
 
-COPY . /flask/
+COPY . /app/
+
+RUN pwd && ls -lah
 
 EXPOSE 5000
 
