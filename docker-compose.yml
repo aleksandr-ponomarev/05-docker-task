@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     build: ./frontend
     ports:
-      - 8080:8080
+      - 8080:80
     networks:
       - public
 
