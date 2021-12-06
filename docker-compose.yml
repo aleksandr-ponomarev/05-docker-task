@@ -1,0 +1,46 @@
+version: '3.1'
+services:
+
+  frontend:
+    container_name: frontend
+    restart: unless-stopped
+    build: ./frontend
+    ports:
+      - 8080:8080
+    networks:
+      - public
+
+  backend:
+     container_name: backend
+     restart: unless-stopped
+     build: ./lib_catalog
+     ports:
+       - 8000:8000
+     depends_on:
+       - database 
+     networks:
+       - private
+
+  database:
+    container_name: database
+    image: postgres:14-alpine
+    restart: unless-stopped
+    volumes: 
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django -d django"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - private
+
+networks:
+  private:
+  public:
