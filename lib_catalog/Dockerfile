@@ -1,16 +1,24 @@
-FROM python:3.9.9
+FROM python:3.9.9-slim as base
+
+FROM base as builder
+
+RUN mkdir /setup
+WORKDIR /setup
+
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --prefix=/setup -r requirements.txt
+
+# Build run image.
+FROM base
 
 WORKDIR /app
-COPY requirements.txt .
 
-RUN set -xe \
-		&& pip install -r /app/requirements.txt \
-		&& rm -rf /root/.cache
+ENV PYTHONBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-COPY . /app/
+COPY --from=builder /setup /usr/local
 
-RUN pwd && ls -lah
+COPY . .
 
-EXPOSE 5000
-
-CMD ["gunicorn", "-c", "gunicorn.py", "app:app"]
+CMD ["python", "./manage.py", "runserver", "0.0.0.0:8000"]
