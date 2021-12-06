@@ -4,7 +4,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN set -xe \
-		&& pip install -r /flask/requirements.txt \
+		&& pip install -r /app/requirements.txt \
 		&& rm -rf /root/.cache
 
 COPY . /app/
