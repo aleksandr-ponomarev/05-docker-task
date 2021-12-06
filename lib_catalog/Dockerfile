@@ -1,4 +1,4 @@
-FROM python:3.9.9-slim as base
+FROM python:3.8-slim as base
 
 FROM base as builder
 
@@ -20,5 +20,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 COPY --from=builder /setup /usr/local
 
 COPY . .
+
+EXPOSE 8000
 
 CMD ["python", "./manage.py", "runserver", "0.0.0.0:8000"]
