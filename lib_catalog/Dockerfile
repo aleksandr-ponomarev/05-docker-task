@@ -9,6 +9,7 @@ COPY --from=base requirements.txt /flask/
 
 WORKDIR /flask
 
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 RUN set -xe \
 		&& pip install -r /flask/requirements.txt \
 		&& rm -rf /root/.cache
